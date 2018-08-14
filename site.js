@@ -15,6 +15,20 @@ function getCount(data) {
 
 $(document).ready(function () {
     getData();
+
+    $(document).on("submit", "#formPesquisa", function (e) {
+
+        e.preventDefault();
+
+        var nome = $("#nome").val();
+
+        getDataPorNome(nome);
+    });
+
+
+    $("#btnNovo").click(function(){
+        novoItem();
+    });
 });
 
 function getData() {
@@ -22,21 +36,47 @@ function getData() {
         type: 'GET',
         url: uri,
         success: function (data) {
-            $('#todos').empty();
-            getCount(data.length);
-            $.each(data, function (key, item) {
-
-                $('<tr>'+
-                    '<td>' + item.nome + '</td>' +
-                    '<td><button onclick="editItem(' + item.RestauranteId + ')">Edit</button></td>' +
-                    '<td><button onclick="deleteItem(' + item.RestauranteId + ')">Delete</button></td>' +
-                    '</tr>').appendTo($('#todos'));
-            });
-
+            montarLista(data);
             todos = data;
         }
     });
 }
+
+function getDataPorNome(nome) {
+    $.ajax({
+        type: 'GET',
+        url: uri + "?nome=" + nome,
+        success: function (data) {
+            montarLista(data);
+            todos = data;
+        }
+    });
+}
+
+function novoItem(){
+
+    var html = '<h1 class="mb-4 mt-4">Cadastro de restaurante</h1>'+
+    '<div class="row">'+
+        '<div class="col-md-12">'+
+            '<div class="card border-default mb-4">'+
+                '<div class="card-header">Filtros</div>'+
+                '<div class="card-body">'+
+                ' <form id="formPesquisa" method="GET">'+
+                        '<div class="form-group">'+
+                            '<label>Nome</label>'+
+                            '<input id="nome" required="required" type="text" class="form-control">'+
+                        '</div>'+
+                        '<button id="btnPesquisa" class="btn btn-primary">Pesquisar</button>'+
+                        '<button type="button" id="btnNovo" class="btn btn-success">Cadastrar novo restaurante</a>'+
+                        '</form>'+
+                '</div>'+
+            '</div>'+
+        '</div>'+
+    '</div>';
+
+    $('#conteudo').html(html);
+}
+
 
 function addItem() {
     const item = {
@@ -51,7 +91,7 @@ function addItem() {
         accepts: 'application/json',
         url: uri,
         contentType: 'application/json',
-        data:JSON.stringify(item),
+        data: JSON.stringify(item),
         error: function (jqXHR, textStatus, errorThrown) {
             alert(jqXHR.statusText)
         },
@@ -107,4 +147,19 @@ $('.my-form').on('submit', function () {
 
 function closeInput() {
     $('#spoiler').css({ 'display': 'none' });
+}
+
+function montarLista(data) {
+    $('#restaurantes').empty();
+    getCount(data.length);
+    $.each(data, function (key, item) {
+
+        $('<tr>' +
+            '<td>' +
+            '<button class="btn btn-sm btn-primary" onclick="editItem(' + item.RestauranteId + ')">Editar</button>' +
+            '<button class="btn btn-sm btn-danger" onclick="deleteItem(' + item.RestauranteId + ')">Excluir</button>' +
+            '</td>' +
+            '<td>' + item.nome + '</td>' +
+            '</tr>').appendTo($('#restaurantes'));
+    });
 }

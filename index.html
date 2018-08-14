@@ -1,67 +1,77 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Restaurante</title>
-    <style>
-        input[type='submit'], button, [aria-label] {
-            cursor: pointer;
-        }
-
-        #spoiler {
-            display: none;
-        }
-
-        table {
-            font-family: Arial, sans-serif;
-            border: 1px solid;
-            border-collapse: collapse;
-        }
-
-        th {
-            background-color: #0066CC;
-            color: white;
-        }
-
-        td {
-            border: 1px solid;
-            padding: 5px;
-        }
-    </style>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.min.css">
 </head>
-<body>
-    <h1>Restaurante</h1>
-    <h3>Add</h3>
-    <form action="javascript:void(0);" method="POST" onsubmit="addItem()">
-        <input type="text" id="add-name" placeholder="novo restaurante">
-        <input type="submit" value="Add">
-    </form>
 
-    <div id="spoiler">
-        <h3>Edit</h3>
-        <form class="my-form">
-            <input type="hidden" id="edit-id">
-            <input type="checkbox" id="edit-isComplete">
-            <input type="text" id="edit-name">
-            <input type="submit" value="Edit">
-            <a onclick="closeInput()" aria-label="Close">&#10006;</a>
-        </form>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">RestMais</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Restaurantes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Pratos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="conteudo" class="container">
+        <h1 class="mb-4 mt-4">Restaurantes</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card border-default mb-4">
+                    <div class="card-header">Filtros</div>
+                    <div class="card-body">
+                        <form id="formPesquisa" method="GET">
+                            <div class="form-group">
+                                <label>Nome</label>
+                                <input id="nome" required="required" type="text" class="form-control">
+                            </div>
+                            <button id="btnPesquisa" class="btn btn-primary">Pesquisar</button>
+                            <button type="button" id="btnNovo" class="btn btn-success">Cadastrar novo restaurante</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-sm table-bordered table-condesed">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Nome</th>
+                        </tr>
+                    </thead>
+                    <tbody id="restaurantes"></tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
-    <p id="counter"></p>
-
-    <table>
-        <tr>
-            <th>Nome</th>
-            <th></th>
-            <th></th>
-        </tr>
-        <tbody id="todos"></tbody>
-    </table>
-
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
-            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-            crossorigin="anonymous"></script>
+    <script src="jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <script src="site.js"></script>
 </body>
+
 </html>
