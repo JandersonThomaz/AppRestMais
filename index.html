@@ -36,6 +36,10 @@
     </nav>
 
     <div id="conteudo" class="container">
+        
+    </div>
+
+    <script id="index-restaurante" type="text/x-handlebars-template">
         <h1 class="mb-4 mt-4">Restaurantes</h1>
         <div class="row">
             <div class="col-md-12">
@@ -63,15 +67,52 @@
                             <th>Nome</th>
                         </tr>
                     </thead>
-                    <tbody id="restaurantes"></tbody>
+                    <tbody id="restaurantes">
+                        {{#each this}}
+                        <tr>
+                            <td>
+                                <button class="btn btn-sm btn-primary">Editar</button>
+                                <button class="btn btn-sm btn-danger">Excluir</button>
+                            </td>
+                            <td>
+                                {{nome}}
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
                 </table>
             </div>
         </div>
-    </div>
+    </script>
 
+    <script id="novo-restaurante" type="text/x-handlebars-template">
+        <h1 class="mb-4 mt-4">Cadastro de restaurante</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card border-default mb-4">
+                    <div class="card-header">Dados</div>
+                    <div class="card-body">
+                        <form id="formRestaurante" method="POST">
+                            <div class="form-group">
+                                <label>Nome</label>
+                                <input id="nome" required="required" type="text" class="form-control">
+                            </div>
+                            <button type="button" id="btnCancelar" class="btn btn-danger">Cancelar</button>
+                            <button class="btn btn-success">Salvar</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </script>
+
+
+    <script src="handlebars-v4.0.11.js"></script>
     <script src="jquery-3.3.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="site.js"></script>
+
+
 </body>
 
 </html>

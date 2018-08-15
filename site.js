@@ -1,5 +1,5 @@
 const uri = 'http://localhost:4890/api/restaurantes';
-let todos = null;
+
 function getCount(data) {
     const el = $('#counter');
     let name = 'to-do';
@@ -14,20 +14,21 @@ function getCount(data) {
 }
 
 $(document).ready(function () {
+
     getData();
 
     $(document).on("submit", "#formPesquisa", function (e) {
-
         e.preventDefault();
-
         var nome = $("#nome").val();
-
         getDataPorNome(nome);
     });
 
-
-    $("#btnNovo").click(function(){
+    $(document).on("click","#btnNovo", function(){
         novoItem();
+    });
+
+    $(document).on("click","#btnCancelar", function(){
+        getData();
     });
 });
 
@@ -37,7 +38,6 @@ function getData() {
         url: uri,
         success: function (data) {
             montarLista(data);
-            todos = data;
         }
     });
 }
@@ -48,33 +48,15 @@ function getDataPorNome(nome) {
         url: uri + "?nome=" + nome,
         success: function (data) {
             montarLista(data);
-            todos = data;
         }
     });
 }
 
 function novoItem(){
 
-    var html = '<h1 class="mb-4 mt-4">Cadastro de restaurante</h1>'+
-    '<div class="row">'+
-        '<div class="col-md-12">'+
-            '<div class="card border-default mb-4">'+
-                '<div class="card-header">Filtros</div>'+
-                '<div class="card-body">'+
-                ' <form id="formPesquisa" method="GET">'+
-                        '<div class="form-group">'+
-                            '<label>Nome</label>'+
-                            '<input id="nome" required="required" type="text" class="form-control">'+
-                        '</div>'+
-                        '<button id="btnPesquisa" class="btn btn-primary">Pesquisar</button>'+
-                        '<button type="button" id="btnNovo" class="btn btn-success">Cadastrar novo restaurante</a>'+
-                        '</form>'+
-                '</div>'+
-            '</div>'+
-        '</div>'+
-    '</div>';
+    var template = Handlebars.compile($('#novo-restaurante').html());
 
-    $('#conteudo').html(html);
+    $('#conteudo').html(template);
 }
 
 
@@ -150,16 +132,7 @@ function closeInput() {
 }
 
 function montarLista(data) {
-    $('#restaurantes').empty();
-    getCount(data.length);
-    $.each(data, function (key, item) {
+    var template = Handlebars.compile($('#index-restaurante').html());
 
-        $('<tr>' +
-            '<td>' +
-            '<button class="btn btn-sm btn-primary" onclick="editItem(' + item.RestauranteId + ')">Editar</button>' +
-            '<button class="btn btn-sm btn-danger" onclick="deleteItem(' + item.RestauranteId + ')">Excluir</button>' +
-            '</td>' +
-            '<td>' + item.nome + '</td>' +
-            '</tr>').appendTo($('#restaurantes'));
-    });
+    $('#conteudo').html(template(data));
 }
