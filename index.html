@@ -179,9 +179,9 @@
                     <div class="card-body">
                         <form id="formPrato" method="POST">
 
-                                {{#if restauranteId}}
-                                    <input name="restauranteId" value="{{restauranteId}}" type="hidden"/>
-                                {{/if}}
+                            {{#if pratoId}}
+                                <input name="pratoId" value="{{pratoId}}" type="hidden"/>
+                            {{/if}}
 
                             <div id="conteudo-select-restaurante" class="form-group">
 
@@ -198,7 +198,7 @@
                                 </div>
 
                             <button type="button" id="btnCancelarPrato" class="btn btn-danger"><i class="fa fa-times"></i> Cancelar</button>
-                            <button class="btn btn-success"><i class="fa fa-save"></i>Salvar</a>
+                            <button class="btn btn-success"><i class="fa fa-save"></i> Salvar</a>
                         </form>
                     </div>
                 </div>
@@ -208,15 +208,11 @@
 
     <script id="select-restaurante" type="text/x-handlebars-template">
         <label>Restaurante</label>
-        <select required="required" name="restauranteId" class="form-control">
+        <select required="required" name="restauranteId" id="restauranteId" class="form-control">
             <option value="">Selecione</option>
-            {{#each this}}
-                {{#if restauranteId}}
-                    <option selected="selected" value="{{restauranteId}}">{{nome}}</option>
-                {{else}}
+                {{#each this}}
                     <option value="{{restauranteId}}">{{nome}}</option>
-                {{/if}}
-            {{/each}}
+                {{/each}}
         </select>
       </script>
 

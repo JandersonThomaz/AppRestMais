@@ -52,10 +52,10 @@ $(document).ready(function () {
 
         var data = $(this).serializeJSON();
 
-        if(data.pratoId){
+        if (data.pratoId) {
             editarPrato(data);
         }
-        else{
+        else {
             salvarPrato(data);
         }
     });
@@ -125,7 +125,7 @@ function excluirPrato(id) {
         url: urlPrato + '/' + id,
         type: 'DELETE',
         success: function (result) {
-            getData();
+            buscarTodosOsPratos();
         }
     });
 }
@@ -136,40 +136,42 @@ function prepararEditarPrato(id) {
         type: 'GET',
         success: function (data) {
             renderizarFormPrato(data);
-            carregarDropDown();
+            carregarDropDown(data.restauranteId);
         }
     });
 }
 
-function carregarDropDown(optionSelecionado){
+function carregarDropDown(optionSelecionado) {
     $.ajax({
         url: uri,
         type: 'GET',
         success: function (data) {
-            renderizarSelectRestaurante(data);
+            renderizarSelectRestaurante(data, optionSelecionado);
         }
     });
 }
 
-function renderizarSelectRestaurante(data){
+function renderizarSelectRestaurante(data, optionSelecionado) {
     var template = Handlebars.compile($('#select-restaurante').html());
 
-    if(data){
+    if (data) {
         $('#conteudo-select-restaurante').html(template(data));
     }
-    else{
+    else {
         $('#conteudo-select-restaurante').html(template);
     }
+
+    $("#restauranteId").val(optionSelecionado).change();
 }
 
 function renderizarFormPrato(data) {
 
     var template = Handlebars.compile($('#cadastro-prato').html());
 
-    if(data){
+    if (data) {
         $('#conteudo').html(template(data));
     }
-    else{
+    else {
         $('#conteudo').html(template);
     }
 
@@ -179,10 +181,10 @@ function renderizarListaDePratos(data) {
 
     var template = Handlebars.compile($('#index-prato').html());
 
-    if(data){
+    if (data) {
         $('#conteudo').html(template(data));
     }
-    else{
+    else {
         $('#conteudo').html(template);
     }
 }
