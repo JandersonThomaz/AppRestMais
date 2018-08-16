@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Restaurante</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="css/font-awesome/font-awesome.min.css">
 </head>
 
 <body>
@@ -20,15 +21,15 @@
             <div class="collapse navbar-collapse" id="navbarColor01">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Home
+                        <a id="link-home" class="nav-link" href="#">Home
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Restaurantes</a>
+                        <a id="link-restaurantes" class="nav-link" href="#">Restaurantes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Pratos</a>
+                        <a id="link-pratos" class="nav-link" href="#">Pratos</a>
                     </li>
                 </ul>
             </div>
@@ -36,9 +37,12 @@
     </nav>
 
     <div id="conteudo" class="container">
-        
+        <div class="mt-5 text-center">
+            <img src="logo.png" />
+        </div>
     </div>
 
+    <!-- Template restaurante -->
     <script id="index-restaurante" type="text/x-handlebars-template">
         <h1 class="mb-4 mt-4">Restaurantes</h1>
         <div class="row">
@@ -46,13 +50,13 @@
                 <div class="card border-default mb-4">
                     <div class="card-header">Filtros</div>
                     <div class="card-body">
-                        <form id="formPesquisa" method="GET">
+                        <form id="formPesquisaRestaurante" method="GET">
                             <div class="form-group">
                                 <label>Nome</label>
                                 <input id="nome" required="required" type="text" class="form-control">
                             </div>
-                            <button id="btnPesquisa" class="btn btn-primary">Pesquisar</button>
-                            <button type="button" id="btnNovo" class="btn btn-success">Cadastrar novo restaurante</a>
+                            <button id="btnPesquisaRestaurante" class="btn btn-primary"><i class="fa fa-search"></i> Pesquisar</button>
+                            <button type="button" id="btnNovoRestaurante" class="btn btn-success"><i class="fa fa-plus"></i> Cadastrar novo restaurante</a>
                         </form>
                     </div>
                 </div>
@@ -63,19 +67,100 @@
                 <table class="table table-sm table-bordered table-condesed">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th>Ações</th>
                             <th>Nome</th>
+                        </tr>
+                    </thead>
+                    <tbody id="restaurantes">
+                            {{#each this}}
+                            <tr>
+                                <td style="width: 160px">
+                                    <button data-id="{{restauranteId}}" class="editarRestaurante btn btn-sm btn-primary"><i class="fa fa-edit"></i> Editar</button>
+                                    <button data-id="{{restauranteId}}" class="excluirRestaurante btn btn-sm btn-danger"><i class="fa fa-trash"></i> Excluir</button>
+                                </td>
+                                <td>
+                                    {{nome}}
+                                </td>
+                            </tr>
+                            {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </script>
+
+    <script id="cadastro-restaurante" type="text/x-handlebars-template">
+        <h1 class="mb-4 mt-4">Cadastro de restaurante</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card border-default mb-4">
+                    <div class="card-header">Dados</div>
+                    <div class="card-body">
+                        <form id="formRestaurante" method="POST">
+                            <div class="form-group">
+                                {{#if restauranteId}}
+                                    <input name="restauranteId" value="{{restauranteId}}" type="hidden"/>
+                                {{/if}}
+ 
+                                <label>Nome</label>
+                                <input id="nome" name="nome" required="required" value="{{nome}}" type="text" class="form-control"/>
+                            </div>
+                            <button type="button" id="btnCancelarRestaurante" class="btn btn-danger"><i class="fa fa-times"></i> Cancelar</button>
+                            <button class="btn btn-success"><i class="fa fa-save"></i> Salvar</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </script>
+
+
+    <!-- Templates prato -->
+    <script id="index-prato" type="text/x-handlebars-template">
+        <h1 class="mb-4 mt-4">Pratos</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card border-default mb-4">
+                    <div class="card-header">Filtros</div>
+                    <div class="card-body">
+                        <form id="formPesquisaPrato" method="GET">
+                            <div class="form-group">
+                                <label>Nome</label>
+                                <input id="nome" required="required" type="text" class="form-control">
+                            </div>
+                            <button id="btnPesquisa" class="btn btn-primary"><i class="fa fa-search"></i> Pesquisar</button>
+                            <button type="button" id="btnNovoPrato" class="btn btn-success"><i class="fa fa-plus"></i> Cadastrar novo prato</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-sm table-bordered table-condesed">
+                    <thead>
+                        <tr>
+                            <th>Ações</th>
+                            <th>Restaurante</th>
+                            <th>Nome</th>
+                            <th>Preço</th>
                         </tr>
                     </thead>
                     <tbody id="restaurantes">
                         {{#each this}}
                         <tr>
+                            <td style="width: 160px">
+                                <button data-id="{{pratoId}}" class="editarPrato btn btn-sm btn-primary"><i class="fa fa-edit"></i> Editar</button>
+                                <button data-id="{{pratoId}}" class="excluirPrato btn btn-sm btn-danger"><i class="fa fa-trash"></i> Excluir</button>
+                            </td>
                             <td>
-                                <button class="btn btn-sm btn-primary">Editar</button>
-                                <button class="btn btn-sm btn-danger">Excluir</button>
+                                {{restaurante.nome}}
                             </td>
                             <td>
                                 {{nome}}
+                            </td>
+                            <td>
+                                R$ {{preco}}
                             </td>
                         </tr>
                         {{/each}}
@@ -85,20 +170,35 @@
         </div>
     </script>
 
-    <script id="novo-restaurante" type="text/x-handlebars-template">
-        <h1 class="mb-4 mt-4">Cadastro de restaurante</h1>
+    <script id="cadastro-prato" type="text/x-handlebars-template">
+        <h1 class="mb-4 mt-4">Cadastro de prato</h1>
         <div class="row">
             <div class="col-md-12">
                 <div class="card border-default mb-4">
                     <div class="card-header">Dados</div>
                     <div class="card-body">
-                        <form id="formRestaurante" method="POST">
+                        <form id="formPrato" method="POST">
+
+                                {{#if restauranteId}}
+                                    <input name="restauranteId" value="{{restauranteId}}" type="hidden"/>
+                                {{/if}}
+
+                            <div id="conteudo-select-restaurante" class="form-group">
+
+                            </div>
+
                             <div class="form-group">
                                 <label>Nome</label>
-                                <input id="nome" required="required" type="text" class="form-control">
+                                <input id="nome" name="nome" required="required" value="{{nome}}" type="text" class="form-control"/>
                             </div>
-                            <button type="button" id="btnCancelar" class="btn btn-danger">Cancelar</button>
-                            <button class="btn btn-success">Salvar</a>
+
+                            <div class="form-group">
+                                    <label>Preço</label>
+                                    <input id="preco" name="preco" required="required" value="{{preco}}" type="number" class="form-control"/>
+                                </div>
+
+                            <button type="button" id="btnCancelarPrato" class="btn btn-danger"><i class="fa fa-times"></i> Cancelar</button>
+                            <button class="btn btn-success"><i class="fa fa-save"></i>Salvar</a>
                         </form>
                     </div>
                 </div>
@@ -106,11 +206,34 @@
         </div>
       </script>
 
+    <script id="select-restaurante" type="text/x-handlebars-template">
+        <label>Restaurante</label>
+        <select required="required" name="restauranteId" class="form-control">
+            <option value="">Selecione</option>
+            {{#each this}}
+                {{#if restauranteId}}
+                    <option selected="selected" value="{{restauranteId}}">{{nome}}</option>
+                {{else}}
+                    <option value="{{restauranteId}}">{{nome}}</option>
+                {{/if}}
+            {{/each}}
+        </select>
+      </script>
 
-    <script src="handlebars-v4.0.11.js"></script>
-    <script src="jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="site.js"></script>
+
+    <script src="js/handlebars/handlebars-v4.0.11.js"></script>
+    <script src="js/jquery/jquery-3.3.1.min.js"></script>
+    <script src="js/jquery/jquery.serializejson.min.js"></script>
+    <script src="js/bootstrap/bootstrap.min.js"></script>
+    <script src="js/restaurante.js"></script>
+    <script src="js/pratos.js"></script>
+
+    <script>
+        $(document).on("click", "#link-home", function () {
+            $("#conteudo").html('<div class="mt-5 text-center"><img src="logo.png" /></div>');
+        });
+    </script>
+
 
 
 </body>
